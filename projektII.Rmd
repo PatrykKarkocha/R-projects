@@ -1,0 +1,107 @@
+---
+title: "Project II"
+output: html_document
+date: "2023-05-03"
+---
+```{r}
+kultura<-read.csv("kultura.csv", header=TRUE, dec=",", sep=";")
+```
+
+```{r}
+names(kultura)
+```
+
+```{r}
+kultura[,4:8]<-scale(kultura[,4:8])
+```
+
+```{r}
+install.packages("factoextra")
+```
+
+```{r}
+library(factoextra)
+```
+```{r}
+fviz_nbclust(kultura[,4:8], kmeans, method="wss")
+```
+
+```{r}
+wss<-numeric()
+```
+
+```{r}
+bss<-numeric()
+```
+
+```{r}
+calinskiharabasz<-numeric()
+```
+
+```{r}
+for(k in 2:8)(wss[k]<-kmeans(kultura[,4:8], centers=k, nstart=50)$tot.withinss)
+```
+
+```{r}
+wss
+```
+```{r}
+plot(wss, type="b", xlab="Liczba skupień (k)")
+```
+
+```{r}
+for(k in 2:8)(bss[k]<-kmeans(kultura[,4:8], centers=k, nstart=50)$betweenss)
+```
+
+```{r}
+bss
+```
+
+```{r}
+plot(bss, type="b", xlab="Liczba skupień (k)")
+```
+
+```{r}
+nrow(kultura)
+```
+
+```{r}
+for(k in 2:8){calinskiharabasz[k]<-(bss[k]/(k-1))/(wss[k]/(nrow(kultura)-k))}
+```
+
+```{r}
+calinskiharabasz
+```
+
+```{r}
+plot(calinskiharabasz, type="b", xlab="liczba skupień (k)")
+```
+
+```{r}
+model1<-kmeans(kultura[,4:8], centers=8, nstart=50)
+```
+
+```{r}
+model1
+```
+
+```{r}
+tabela_krzyzowa<-table(kultura$polska_wschodnia,model1$cluster)
+```
+
+```{r}
+tabela_krzyzowa
+```
+
+```{r}
+kultura$cluster<-model1$cluster
+```
+
+```{r}
+head(kultura,8)
+```
+
+```{r}
+write.csv(kultura, "plik-dla-qgisa.csv", na="")
+```
+

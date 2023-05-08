@@ -1,0 +1,91 @@
+---
+title: "Projekt R - Patryk Karkocha"
+output: html_document
+date: "2023-04-12"
+---
+```{r}
+kultura<-read.csv("kultura_2.csv", header=TRUE, dec=",", sep=";")
+names(kultura)
+```
+```{r}
+library(psych)
+```
+
+```{r}
+head(kultura)
+```
+```{r}
+names(kultura)
+```
+```{r}
+cortest.bartlett(kultura[,3:7])
+```
+```{r}
+KMO(kultura[,3:7])
+```
+
+```{r}
+library(psy)
+```
+
+```{r}
+scree.plot(kultura[,3:7], type="R")
+```
+
+```{r}
+library(psy)
+```
+```{r}
+scree.plot(kultura[,3:7], type="R")
+```
+```{r}
+model1<-principal(kultura[,3:7], nfactors=2, rotate="varimax")
+```
+
+```{r}
+model1
+```
+```{r}
+fa.diagram(model1)
+```
+```{r}
+skladowe<-predict.psych(model1, kultura[,3:7])
+```
+
+```{r}
+head(skladowe)
+```
+
+
+```{r}
+kultura<-cbind(kultura[,3:7], skladowe)
+```
+```{r}
+head(kultura)
+```
+
+
+```{r}
+head(kultura)
+```
+
+
+```{r}
+kultura2<-read.csv("kultura_2.csv", header=TRUE, dec=",", sep=";")
+```
+
+```{r}
+kultura<-cbind(kultura, kultura2$Kod)
+```
+
+```{r}
+head(kultura)
+```
+
+```{r}
+write.csv(kultura, "mapy.csv", na="")
+```
+
+
+
+
